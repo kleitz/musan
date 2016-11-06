@@ -22,7 +22,14 @@ class StoreClassifiedRequest extends Request {
     *
     *   @return array
     */
-    
+    public function rules() {
+        return [
+            'title'         => 'required',
+            'category_id'   => 'required',
+            'price'         => 'required',
+            'email'         => 'required|email',
+        ];
+    }
     
     
 }
