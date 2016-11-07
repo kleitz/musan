@@ -21,6 +21,13 @@ __(note: they will be empty, but you may set up new user account in project and 
 5. For a correct preview, you will have to set up a virtual host. __(I recommend using XAMPP)__
 6. GOOD LUCK!
 
+-------------
+
+__demo account__
+
+| USER                     | PASSWORD |
+| ------------------------ | -------- |
+| yakubov.kamran@gmail.com |  123456  |
 
 [![Alt text](https://github.com/djranzou/musan/blob/master/project-preview.jpg "MUSAN / TEST PROJECT BY KAMRAN YAKUB.")](http://musan.kamfolio.com)
 
