@@ -22,7 +22,7 @@ __(note: they will be empty, but you may set up new user account in project and 
 6. GOOD LUCK!
 
 
-[![Alt text](https://github.com/djranzou/musan/blob/master/project-preview.jpg "MUSAN / TEST PROJECT BY KAMRAN YAKUB.")](http://kamfolio.com/portfolio/prototyping/musan/public/)
+[![Alt text](https://github.com/djranzou/musan/blob/master/project-preview.jpg "MUSAN / TEST PROJECT BY KAMRAN YAKUB.")](http://musan.kamfolio.com)
 
 -------------
 © 2016 / Project developed by Kamran Yakub [www.kamfolio.com](http://www.kamfolio.com)
