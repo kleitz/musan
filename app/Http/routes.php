@@ -13,8 +13,23 @@
 
 Route::get('/', 'ClassifiedsController@index');
 
+// Search Route
+Route::get('/search', 'ClassifiedsController@search');
+
 // Classifieds routes
 Route::resource('classifieds', 'ClassifiedsController');
 
 // Categories routes
 Route::resource('categories', 'CategoriesController');
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration routes...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+// profile Route
+Route::get('auth/profile', 'Auth\AuthController@getProfile');

@@ -2,14 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreClassifiedRequest;
+use App\Commands\StoreClassifiedCommand;
+
+use App\Http\Requests\UpdateClassifiedRequest;
+use App\Commands\UpdateClassifiedCommand;
+
+use App\Commands\DestroyClassifiedCommand;
+
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Classified;
+use Auth;
+use DB;
 
 class ClassifiedsController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+        $this->middleware('auth', ['except' => ['index', 'show', 'search']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,6 +32,13 @@ class ClassifiedsController extends Controller
     public function index()
     {
         $classifieds = Classified::all();
+        return view('index', compact('classifieds'));
+    }
+    
+    public function search(){
+        $searchString = \Input::get('searchString');
+        
+        $classifieds = DB::table('classifieds')->where('title', 'LIKE', '%' . $searchString. '%')->get();
         return view('index', compact('classifieds'));
     }
 
@@ -39,32 +60,32 @@ class ClassifiedsController extends Controller
      */
     public function store(StoreClassifiedRequest $request)
     {
-        $title =            $request -> input('title');
-        $category_id =      $request -> input('category_id');
-        $description =      $request -> input('description');
-        $price =            $request -> input('price');
-        $condition =        $request -> input('condition');
-        $main_image =       $request -> file('main_image');
-        $location =         $request -> input('location');
-        $email =            $request -> input('email');
-        $phone =            $request -> input('phone');
-        //$owner_id =         Auth::user()->id;
-        $owner_id =         1;
+        $title = $request->input('title');
+        $category_id = $request->input('category_id');
+        $description = $request->input('description');
+        $price = $request->input('price');
+        $condition = $request->input('condition');
+        $main_image = $request->file('main_image');
+        $location = $request->input('location');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+        $owner_id = Auth::user()->id;
+        //$owner_id = '1';
         
-        // Check if the image is uploaded
+        // Check if image uploaded
         if($main_image){
-            $main_image_filename = $main_image -> getClientOriginalName();
-            $main_image -> move(public_path('images'), $main_image_filename);
+            $main_image_filename = $main_image->getClientOriginalName();
+            $main_image->move(public_path('images'), $main_image_filename);
         } else {
             $main_image_filename = 'noimage.jpg';
         }
         
-        // Create command
-        $command = new StoreClassifiedCommand($title, $category_id, $description, $main_images, $price, $condition, $location, $email, $phone, $owner_id);
-        $this -> dispatch($command);
+        // Create Command
+        $command = new StoreClassifiedCommand($title, $category_id, $description, $main_image_filename, $price, $condition, $location, $email, $phone, $owner_id);
+        $this->dispatch($command);
         
-        // On complete - redirect and display a message
-        return \Redirect::route('classifieds.index') -> with('message', 'Listing created');
+        return \Redirect::route('classifieds.index')
+                ->with('message', 'Listing Created');
     }
 
     /**
@@ -87,7 +108,8 @@ class ClassifiedsController extends Controller
      */
     public function edit($id)
     {
-        return view('edit');
+        $classified = Classified::find($id);
+        return view('edit', compact('classified'));
     }
 
     /**
@@ -97,9 +119,35 @@ class ClassifiedsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateClassifiedRequest $request, $id)
     {
-        //
+        $title = $request->input('title');
+        $category_id = $request->input('category_id');
+        $description = $request->input('description');
+        $price = $request->input('price');
+        $condition = $request->input('condition');
+        $main_image = $request->file('main_image');
+        $location = $request->input('location');
+        $email = $request->input('email');
+        $phone = $request->input('phone');
+        $owner_id = 1;
+        
+        $current_image_filename = Classified::find($id)->main_image;
+        
+        // Check if image uploaded
+        if($main_image){
+            $main_image_filename = $main_image->getClientOriginalName();
+            $main_image->move(public_path('images'), $main_image_filename);
+        } else {
+            $main_image_filename = $current_image_filename;
+        }
+        
+        // Update Command
+        $command = new UpdateClassifiedCommand($id, $title, $category_id, $description, $main_image_filename, $price, $condition, $location, $email, $phone, $owner_id);
+        $this->dispatch($command);
+        
+        return \Redirect::route('classifieds.index')
+                ->with('message', 'Listing Updated');
     }
 
     /**
@@ -110,6 +158,10 @@ class ClassifiedsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $command = new DestroyClassifiedCommand($id);
+        $this->dispatch($command);
+        
+        return \Redirect::route('classifieds.index')
+                ->with('message', 'Listing Removed');
     }
 }

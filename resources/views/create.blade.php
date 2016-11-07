@@ -1,145 +1,69 @@
 @extends('layouts.main')
+
 @section('title', 'Create')
 
 @section('content')
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Create listing</h3>
-    </div>
-    
-    <div class="panel-body">
-        <div class="form-group">
-            {!! Form::open(array('action' => 'ClassifiedsController@store', 'enctype' => 'multipart/form-data')) !!}
-            
-            <div class="form-group">
-                {!! 
-                    Form::text('title', 
-                    $value=null, 
-                    $attributes=[
-                        'class'=>'form-control', 
-                        'name'=>'title', 
-                        'placeholder'=>'Title',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-                        
-            <div class="form-group">
-                <select name="category_id" class="form-control">
-                    <option value="1">Desktops</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                {!! 
-                    Form::textarea('description', 
-                    $value=null, 
-                    $attributes=[
-                        'class'=>'form-control', 
-                        'name'=>'description', 
-                        'placeholder'=>'Description',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-            
-            <div class="form-group">
-                {!! 
-                    Form::text('price', 
-                    $value=null, 
-                    $attributes=[
-                        'class'=>'form-control', 
-                        'name'=>'price', 
-                        'placeholder'=>'Price',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-            
-            <div class="form-group">
-                {!! 
-                    Form::select('condition', array(
-                    '0'=>'Choose condition',
-                    'New'=>'New',
-                    'Like new'=>'Like new',
-                    'Used'=>'Used',
-                    'Bad'=>'Bad',
-                    'Broken'=>'Broken'), 
-                    $value=null, 
-                    $attributes=[
-                        'class'=>'form-control', 
-                        'name'=>'description',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-            
-            <div class="form-group">
-                {!! 
-                    Form::file('main_image',  
-                    $attributes=[
-                        'class'=>'btn btn-default',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-                
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Sellers contact info</h3>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                {!! 
-                    Form::text('location', 
-                    $value=null, 
-                    $attributes=[
-                        'class'=>'form-control', 
-                        'name'=>'location', 
-                        'placeholder'=>'Location',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-            
-            <div class="form-group">
-                {!! 
-                    Form::text('email', 
-                    $value=null, 
-                    $attributes=[
-                        'class'=>'form-control', 
-                        'name'=>'email', 
-                        'placeholder'=>'Email',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-            
-            <div class="form-group">
-                {!! 
-                    Form::text('phone', 
-                    $value=null, 
-                    $attributes=[
-                        'class'=>'form-control', 
-                        'name'=>'phone', 
-                        'placeholder'=>'Phone',
-                        'required'
-                    ]) 
-                !!}
-            </div>
-            
-            <div class="form-group">
-                {!! 
-                    Form::submit('Submit', 
-                    $attributes=[
-                        'class'=>'btn btn-primary'
-                    ]) 
-                !!}
-            </div>
-            
-            {!! Form::close() !!}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Create Listing</h3>
         </div>
-    </div>
-</div>
+        <div class="panel-body">
+          {!! Form::open(array('action' => 'ClassifiedsController@store', 'enctype' => 'multipart/form-data')) !!}
+          <div class="form-group">
+             {!! Form::label('title', 'Title') !!} 
+             {!! Form::text('title', $value= null, $attributes = ['class' => 'form-control', 'name' => 'title']) !!}
+          </div>
+          
+          <div class="form-group">
+             {!! Form::label('category_id', 'Category') !!}
+             <select name="category_id" class="form-control">
+                @foreach($categories as $categories)
+                <option value="1">{{$categories->name}}</option>
+                @endforeach
+             </select>
+          </div>
+          
+          <div class="form-group">
+             {!! Form::label('description', 'Description') !!} 
+             {!! Form::textarea('description', $value= null, $attributes = ['class' => 'form-control', 'name' => 'description']) !!}
+          </div>
+          
+          <div class="form-group">
+             {!! Form::label('price', 'Price') !!} 
+             {!! Form::text('price', $value= null, $attributes = ['class' => 'form-control', 'name' => 'price']) !!}
+          </div>
+          
+          <div class="form-group">
+          {!! Form::label('condition', 'Condition'); !!}
+          {!! Form::select('condition', array(
+            '0' => 'Choose Condition', 
+            'New' => 'New', 
+            'Like New' => 'Like New',
+            'Used' => 'Used',
+            'Bad' => 'Bad',
+            'Broken' => 'Broken'
+          ), '0', $attributes = ['class' => 'form-control', 'name' => 'condition' ]) !!}
+        </div>
+        <div class="form-group">
+          {!! Form::label('main_image', 'Main Image'); !!}
+          {!! Form::file('main_image', $attributes = ['class' => 'btn btn-default']); !!}
+        </div>
+
+        <h3>Seller Contact Info</h3>
+         <div class="form-group">
+          {!! Form::label('location', 'Location'); !!}
+          {!! Form::text('location', $value = null , $attributes = ['class' => 'form-control', 'name' => 'location' ,'placeholder' => 'Location']) !!}
+        </div>
+        <div class="form-group">
+          {!! Form::label('email', 'Contact Email'); !!}
+          {!! Form::text('email', $value = null , $attributes = ['class' => 'form-control', 'name' => 'email' ,'placeholder' => 'Contact Email']) !!}
+        </div>
+        <div class="form-group">
+          {!! Form::label('phone', 'Contact Phone'); !!}
+          {!! Form::text('phone', $value = null , $attributes = ['class' => 'form-control', 'name' => 'phone' ,'placeholder' => 'Contact Phone (Optional)']) !!}
+        </div>
+        {!! Form::submit('Submit', $attributes = ['class' => 'btn btn-primary']); !!}
+          {!! Form::close() !!}
+        </div>
+      </div>
 @stop

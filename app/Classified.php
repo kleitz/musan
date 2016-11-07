@@ -8,21 +8,12 @@ class Classified extends Model
 {
     protected $table = 'classifieds';
     
-    protected $fillable = [
-        'title', 
-        'category_id', 
-        'description', 
-        'price', 
-        'main_image', 
-        'condition', 
-        'location', 
-        'email', 
-        'phone'
-    ];
-    
+    protected $fillable = ['title', 'category_id','description', 'price', 'main_image', 'condition', 'location', 'email', 'phone'];
+
     protected $hidden = [];
     
     public function category(){
         return $this->belongsTo('App\Category');
     }
+    
 }

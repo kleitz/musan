@@ -39,9 +39,15 @@
                     </a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/classifieds/create">Add Listing</a></li>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+                        <li><a href="/classifieds/create">Add Classified</a></li>
+                        @if(Auth::guest())
+                            <li><a href="/auth/login">Login</a></li>
+                            <li><a href="/auth/register">Register</a></li>
+                        @else
+                            <li><a href="/auth/logout">Logout</a></li>
+                        @endif
                     </ul>
                 </div><!-- nav-collapse -->
             </nav>
@@ -55,16 +61,30 @@
             <div class="row">
                 <div class="col-md-3">
                     @section('sidebar')
-                        Sidebar
+                        {!! Form::open(array('action' => 'ClassifiedsController@search', 'method' => 'GET')) !!}
+                            {!! Form::text('searchString', null, array('class' => 'form-control', 'placeholder' => 'Search...')) !!}
+                        {!! Form::close() !!}
+                        <br>
+                        <div class="list-group">
+                            @foreach($categories as $category)
+                            <a href="/categories/{{$category->id}}" class="list-group-item">{{$category->name}}</a>
+                            @endforeach
+                        </div>
                     @show
                 </div>
                 
                 <div class="col-md-9">
                     @if(Session::has('message'))
-                    <div class="alert alert-info">
-                        {{ Session::get('message') }}
-                    </div>
+                        <div class='alert alert-info'>
+                            {{Session::get('message')}}
+                        </div>
                     @endif
+
+                    @foreach($errors->all() as $error)
+                        <div class='alert alert-danger'>
+                            {{$error}}
+                        </div>
+                    @endforeach
                     @yield('content')
                 </div>
             </div>

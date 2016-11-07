@@ -14,6 +14,16 @@
                 <div class="classified-show-image">
                     <img src="/images/{{$classified->main_image}}" />
                 </div>
+                @if(!Auth::guest())
+                    @if(Auth::user()->id == $classified->owner_id)
+                        <div class="classified-controls">
+                            {!! Form::open(['method' => 'DELETE', 'route' => ['classifieds.destroy', $classified->id]]) !!}
+                                <a href='/classifieds/{{$classified->id}}/edit' class='btn btn-default'>Edit</a>    
+                                {!! Form::submit('Delete', $attributes = ['class' => 'btn btn-danger']); !!}
+                            {!! Form::close() !!}
+                        </div>
+                    @endif
+                @endif
             </div>
             
             <div class="col-md-8 no-padding">

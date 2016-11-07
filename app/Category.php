@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $table = 'categories';
+     protected $table = 'categories';
     
     protected $fillable = ['name'];
-    
+
     protected $hidden = [];
     
     public function classifieds(){
-        return $this->hasMany('App\Classifieds');
+        return $this->hasMany('App\Classified');
     }
 }
